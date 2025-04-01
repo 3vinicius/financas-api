@@ -36,4 +36,7 @@ public class Pagamento {
     @Column(name = "descricao", length = Integer.MAX_VALUE)
     private String descricao;
 
+    @Column(name = "compensado")
+    private boolean compensado;
+
 }

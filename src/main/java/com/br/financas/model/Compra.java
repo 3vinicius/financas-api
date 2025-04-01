@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -34,13 +35,13 @@ public class Compra {
     private Cliente idcliente;
 
     @Column(name = "data_prev_pagamento")
-    private Integer dataPrevPagamento;
+    private LocalDate dataPrevPagamento;
 
     @Column(name = "produto", length = Integer.MAX_VALUE)
     private String produto;
 
     @Column(name = "data_cricaco")
-    private Instant dataCricaco;
+    private LocalDate dataCricaco;
 
     @Column(name = "quitado")
     private Boolean quitado;
