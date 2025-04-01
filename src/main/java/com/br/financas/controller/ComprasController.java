@@ -33,8 +33,8 @@ public class ComprasController {
 
     @PostMapping()
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        String password = loginRequest.getPassword();
-        String login = loginRequest.getLogin();
+        String password = loginRequest.password();
+        String login = loginRequest.login();
 
         var loginPassword = new UsernamePasswordAuthenticationToken(login, password);
         var auth = authenticationManager.authenticate(loginPassword);

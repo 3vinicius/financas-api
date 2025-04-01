@@ -2,6 +2,7 @@ package com.br.financas.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -28,6 +29,7 @@ public class Pagamento {
     private Cliente idcliente;
 
     @Column(name = "data_pagamento")
+    @CreationTimestamp
     private LocalDate dataPagamento;
 
     @Column(name = "valor")

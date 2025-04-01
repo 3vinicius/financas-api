@@ -33,8 +33,8 @@ public class Auth {
 
     @PostMapping(value = Url_login)
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        String password = loginRequest.getPassword();
-        String login = loginRequest.getLogin();
+        String password = loginRequest.login();
+        String login = loginRequest.password();
 
         var loginPassword = new UsernamePasswordAuthenticationToken(login, password);
         var auth = authenticationManager.authenticate(loginPassword);

@@ -2,10 +2,12 @@ package com.br.financas.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -41,7 +43,8 @@ public class Compra {
     private String produto;
 
     @Column(name = "data_cricaco")
-    private LocalDate dataCricaco;
+    @CreationTimestamp
+    private LocalDateTime dataCricaco;
 
     @Column(name = "quitado")
     private Boolean quitado;

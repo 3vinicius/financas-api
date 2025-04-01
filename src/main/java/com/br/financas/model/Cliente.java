@@ -2,9 +2,11 @@ package com.br.financas.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -39,6 +41,7 @@ public class Cliente {
     private LocalDate dataNascimento;
 
     @Column(name = "data_cricaco")
-    private Instant dataCricaco;
+    @CreationTimestamp
+    private LocalDateTime dataCricaco;
 
 }
