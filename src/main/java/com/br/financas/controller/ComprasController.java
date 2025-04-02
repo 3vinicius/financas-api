@@ -1,50 +1,44 @@
 package com.br.financas.controller;
 
-import com.br.financas.dto.LoginRequest;
-import com.br.financas.model.Usuario;
-import com.br.financas.services.AuthService;
-import com.br.financas.services.TokenService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.br.financas.dto.CompraDto;
+import com.br.financas.model.Compra;
+import com.br.financas.services.CompraService;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 import static com.br.financas.shareds.urls.compras.*;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping(Url_Compras)
 public class ComprasController {
 
 
-    private final AuthService authService;
-    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
+    private final CompraService compraService;
 
-
-    public ComprasController (AuthService authService, AuthenticationManager authenticationManager, TokenService tokenService) {
-        this.authService = authService;
-        this.authenticationManager = authenticationManager;
-        this.tokenService = tokenService;
+    @GetMapping("/todos")
+    public ResponseEntity<List<Compra>> buscarCompras(){
+        return ResponseEntity.ok().body(compraService.buscarCompras());
     }
 
-    @PostMapping()
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        String password = loginRequest.password();
-        String login = loginRequest.login();
+    //@GetMapping("/buscar")
 
-        var loginPassword = new UsernamePasswordAuthenticationToken(login, password);
-        var auth = authenticationManager.authenticate(loginPassword);
-        var token = tokenService.generateToken((UserDetails) auth.getPrincipal());
-
-        Usuario usuario = authService.getUsuario();
-
-        return ResponseEntity.ok().body(token);
+    @GetMapping("/id")
+    public ResponseEntity<Compra> buscarCompraPorId(@RequestParam(value = "id") Integer id){
+        return ResponseEntity.ok().body(compraService.buscarCompraPorId(id));
     }
 
+    @PostMapping("/cadastrar")
+    public ResponseEntity<Compra> cadastrarCompra(@RequestBody CompraDto compra){
+        return ResponseEntity.ok().body(compraService.cadastrarCompra(compra.valor(),compra.descricao(),
+                compra.idCliente(), compra.dataPrevPagamento(), compra.produto()));
+    }
+
+    //@PostMapping("/atualizar")
+
+    //@PostMapping("/deletar")
 
 
 

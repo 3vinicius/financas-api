@@ -1,5 +1,6 @@
 package com.br.financas.services;
 
+import com.br.financas.exceptions.ElementNotSearchException;
 import com.br.financas.model.Cliente;
 import com.br.financas.repositorys.ClienteRepository;
 import com.br.financas.shareds.GenericSpecification;
@@ -25,7 +26,7 @@ public class ClienteService {
     }
 
     public Cliente buscarClientePorId(Integer id){
-        return clienteRepository.findById(id).get();
+        return clienteRepository.findById(id).orElseThrow(() -> new ElementNotSearchException( "Cliente não encontrado!"));
     }
 
     public List<Cliente> buscarClientePorNomeOuCpf(String nome, String cpf){
@@ -38,7 +39,7 @@ public class ClienteService {
 
     public Cliente cadastrarCliente(String nome,String enderco, String phone ,String cpf, LocalDate dataNascimento){
         if(clienteRepository.existsByCpf(cpf)){
-            throw new IllegalArgumentException("CPF já cadastrado!");
+            throw new ResponseStatusException(HttpStatus.CONFLICT,"CPF já cadastrado!");
         }
         return clienteRepository.save(contrutorDeClientes(nome,enderco,phone,cpf,dataNascimento,Optional.empty()));
     }
@@ -54,15 +55,8 @@ public class ClienteService {
         return clienteRepository.save(contrutorDeClientes(nome,enderco,phone,cpf,dataNascimento,cliente));
     }
 
-
     public void deletarCliente(Integer id) {
-        try {
-            clienteRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado!");
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao deletar cliente: " + e.getMessage());
-        }
+        clienteRepository.deleteById(id);
     }
 
     private Cliente contrutorDeClientes(String nome, String enderco, String phone , String cpf, LocalDate dataNascimento, Optional<Cliente> cliente){
@@ -71,7 +65,6 @@ public class ClienteService {
         if(cliente.isPresent()){
             newCliente = cliente.get();
         }
-
         if (nome != null && !nome.isEmpty()){
             newCliente.setNome(nome);
         }
@@ -89,7 +82,4 @@ public class ClienteService {
         }
         return newCliente;
     }
-
-
-
 }

@@ -1,5 +1,6 @@
 package com.br.financas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,6 +35,7 @@ public class Compra {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idcliente")
+    @JsonIgnore
     private Cliente idcliente;
 
     @Column(name = "data_prev_pagamento")
@@ -46,8 +48,8 @@ public class Compra {
     @CreationTimestamp
     private LocalDateTime dataCricaco;
 
-    @Column(name = "quitado")
-    private Boolean quitado;
+    @Column(name = "quitado", nullable = false)
+    private Boolean quitado =  false;
 
     @Column(name = "total")
     private BigDecimal total;
