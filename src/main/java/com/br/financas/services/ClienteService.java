@@ -44,15 +44,9 @@ public class ClienteService {
         return clienteRepository.save(contrutorDeClientes(nome,enderco,phone,cpf,dataNascimento,Optional.empty()));
     }
 
-    public Cliente atualizarCliente(Integer Id, String nome,String enderco, String phone ,String cpf, LocalDate dataNascimento){
-
-        Optional<Cliente> cliente = clienteRepository.findById(Id);
-
-        if(cliente.isEmpty()){
-            throw new IllegalArgumentException("Cliente não encontrado");
-        }
-
-        return clienteRepository.save(contrutorDeClientes(nome,enderco,phone,cpf,dataNascimento,cliente));
+    public Cliente atualizarCliente(Integer id, String nome,String enderco, String phone ,String cpf, LocalDate dataNascimento){
+        Cliente cliente = buscarClientePorId(id);
+        return clienteRepository.save(contrutorDeClientes(nome,enderco,phone,cpf,dataNascimento,Optional.of(cliente)));
     }
 
     public void deletarCliente(Integer id) {
