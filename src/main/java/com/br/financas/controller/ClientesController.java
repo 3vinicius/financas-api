@@ -20,7 +20,7 @@ public class ClientesController {
 
     private final ClienteService clienteService;
 
-    @GetMapping("/todos")
+    @GetMapping()
     public ResponseEntity<List<Cliente>> buscarClientes() {
         return ResponseEntity.ok().body(clienteService.buscarClientes());
     }
@@ -35,19 +35,19 @@ public class ClientesController {
         return ResponseEntity.ok().body(clienteService.buscarClientePorId(id));
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping("")
     public ResponseEntity<Cliente> cadastrarCliente(@RequestBody ClienteDto cliente) {
         return ResponseEntity.ok().body(clienteService.cadastrarCliente(cliente.nome(), cliente.endereco(),
                 cliente.phone(), cliente.cpf(), cliente.dataNascimento()));
     }
 
-    @PostMapping("/atualizar")
+    @PutMapping()
     public ResponseEntity<Cliente> atualizarCliente(@RequestBody ClienteDto cliente) {
-        return ResponseEntity.ok().body(clienteService.atualizarCliente(cliente.Id(), cliente.nome(),
+        return ResponseEntity.ok().body(clienteService.atualizarCliente(cliente.id(), cliente.nome(),
                 cliente.endereco(), cliente.phone(), cliente.cpf(), cliente.dataNascimento()));
     }
 
-    @PostMapping("/deletar")
+    @DeleteMapping()
     public void deletarCliente(@RequestParam Integer id) {
         clienteService.deletarCliente(id);
     }

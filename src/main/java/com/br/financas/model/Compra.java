@@ -46,7 +46,7 @@ public class Compra {
 
     @Column(name = "data_criacao")
     @CreationTimestamp
-    private LocalDateTime dataCricaco;
+    private LocalDateTime dataCriacao;
 
     @Column(name = "quitado", nullable = false)
     private Boolean quitado =  false;
