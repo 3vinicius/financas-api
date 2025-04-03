@@ -5,7 +5,6 @@ import com.br.financas.model.Cliente;
 import com.br.financas.repositorys.ClienteRepository;
 import com.br.financas.shareds.GenericSpecification;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

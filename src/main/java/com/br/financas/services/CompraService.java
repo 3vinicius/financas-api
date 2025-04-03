@@ -6,12 +6,8 @@ import com.br.financas.model.Compra;
 import com.br.financas.repositorys.CompraRepository;
 import com.br.financas.shareds.GenericSpecification;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

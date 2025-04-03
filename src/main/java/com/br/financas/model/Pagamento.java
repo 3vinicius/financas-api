@@ -1,5 +1,6 @@
 package com.br.financas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,7 +27,8 @@ public class Pagamento {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idcliente")
-    private Cliente idcliente;
+    @JsonIgnore
+    private Cliente idCliente;
 
     @Column(name = "data_pagamento")
     @CreationTimestamp
@@ -39,6 +41,6 @@ public class Pagamento {
     private String descricao;
 
     @Column(name = "compensado")
-    private boolean compensado;
+    private boolean compensado = false;
 
 }
