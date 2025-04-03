@@ -40,8 +40,8 @@ public class Cliente {
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
-    @Column(name = "data_cricaco")
+    @Column(name = "data_criacao")
     @CreationTimestamp
-    private LocalDateTime dataCricaco;
+    private LocalDateTime dataCricacao;
 
 }

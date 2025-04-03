@@ -44,7 +44,7 @@ public class Compra {
     @Column(name = "produto", length = Integer.MAX_VALUE)
     private String produto;
 
-    @Column(name = "data_cricaco")
+    @Column(name = "data_criacao")
     @CreationTimestamp
     private LocalDateTime dataCricaco;
 

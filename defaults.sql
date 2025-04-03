@@ -18,7 +18,7 @@ create table clientes
     phone text,
     cpf text,
     data_nascimento DATE,
-    data_cricaco TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -42,7 +42,7 @@ create table compras
     idCliente integer,
     data_prev_pagamento timestamp,
     produto text,
-    data_cricaco TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     quitado boolean default false,
     total numeric,
     constraint fk_cliente foreign key (idCliente) references clientes(id)
