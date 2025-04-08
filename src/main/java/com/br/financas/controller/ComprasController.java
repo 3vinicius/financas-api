@@ -25,12 +25,12 @@ public class ComprasController {
         return ResponseEntity.ok().body(compraService.buscarCompras());
     }
 
-    @GetMapping("/compras_cliente")
+    @GetMapping("/cliente")
     public ResponseEntity<List<Compra>> buscarComprasPorCliente(@RequestParam(value = "id") Integer id){
         return ResponseEntity.ok().body(compraService.buscarComprasPorCliente(id));
     }
 
-    @GetMapping("/buscar_intervalor")
+    @GetMapping("/intervalo")
     public ResponseEntity<List<Compra>> buscarComprasIntervalo(@RequestParam(value = "periodoInicial") LocalDate periodoInicial,
                                                                @RequestParam(value = "periodoFinal") LocalDate periodoFinal){
         return ResponseEntity.ok().body(compraService.buscarComprasPorData(periodoInicial, periodoFinal));

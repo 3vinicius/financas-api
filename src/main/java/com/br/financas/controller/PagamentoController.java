@@ -26,12 +26,12 @@ public class PagamentoController {
         return ResponseEntity.ok().body(PagamentoService.buscarPagamentos());
     }
 
-    @GetMapping("/Pagamentos_cliente")
+    @GetMapping("/cliente")
     public ResponseEntity<List<Pagamento>> buscarPagamentosPorCliente(@RequestParam(value = "id") Integer id){
         return ResponseEntity.ok().body(PagamentoService.buscarPagamentosPorCliente(id));
     }
 
-    @GetMapping("/buscar_intervalor")
+    @GetMapping("/intervalo")
     public ResponseEntity<List<Pagamento>> buscarPagamentosIntervalo(@RequestParam(value = "periodoInicial") LocalDate periodoInicial,
                                                                @RequestParam(value = "periodoFinal") LocalDate periodoFinal){
         return ResponseEntity.ok().body(PagamentoService.buscarPagamentosPorData(periodoInicial, periodoFinal));
