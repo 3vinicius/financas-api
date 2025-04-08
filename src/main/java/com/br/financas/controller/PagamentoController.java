@@ -37,12 +37,12 @@ public class PagamentoController {
         return ResponseEntity.ok().body(PagamentoService.buscarPagamentosPorData(periodoInicial, periodoFinal));
     }
 
-    @GetMapping("/id")
+    @GetMapping()
     public ResponseEntity<Pagamento> buscarPagamentoPorId(@RequestParam(value = "id") Integer id){
         return ResponseEntity.ok().body(PagamentoService.buscarPagamentoPorId(id));
     }
 
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<Pagamento> cadastrarPagamento(@RequestBody PagamentoDto Pagamento){
         return ResponseEntity.ok().body(PagamentoService.cadastrarPagamento(Pagamento.valor(),Pagamento.descricao(),
                 Pagamento.idCliente()));

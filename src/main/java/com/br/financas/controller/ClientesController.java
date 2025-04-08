@@ -30,12 +30,12 @@ public class ClientesController {
         return ResponseEntity.ok().body(clienteService.buscarClientePorNomeOuCpf(nome, cpf));
     }
 
-    @GetMapping("/id")
+    @GetMapping()
     public ResponseEntity<Cliente> buscarClientePorId(@RequestParam(value = "id", required = true) Integer id) {
         return ResponseEntity.ok().body(clienteService.buscarClientePorId(id));
     }
 
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<Cliente> cadastrarCliente(@RequestBody ClienteDto cliente) {
         return ResponseEntity.ok().body(clienteService.cadastrarCliente(cliente.nome(), cliente.endereco(),
                 cliente.phone(), cliente.cpf(), cliente.dataNascimento()));

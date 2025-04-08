@@ -36,12 +36,12 @@ public class ComprasController {
         return ResponseEntity.ok().body(compraService.buscarComprasPorData(periodoInicial, periodoFinal));
     }
 
-    @GetMapping("/id")
+    @GetMapping()
     public ResponseEntity<Compra> buscarCompraPorId(@RequestParam(value = "id") Integer id){
         return ResponseEntity.ok().body(compraService.buscarCompraPorId(id));
     }
 
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<Compra> cadastrarCompra(@RequestBody CompraDto compra){
         return ResponseEntity.ok().body(compraService.cadastrarCompra(compra.valor(),compra.descricao(),
                 compra.idCliente(), compra.dataPrevPagamento(), compra.produto()));
