@@ -1,5 +1,6 @@
 package com.br.financas.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,6 +32,7 @@ public class Pagamento {
     private Cliente idCliente;
 
     @Column(name = "data_pagamento")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @CreationTimestamp
     private LocalDate dataPagamento;
 

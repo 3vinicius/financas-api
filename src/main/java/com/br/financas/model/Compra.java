@@ -1,5 +1,6 @@
 package com.br.financas.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,12 +40,14 @@ public class Compra {
     private Cliente idcliente;
 
     @Column(name = "data_prev_pagamento")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataPrevPagamento;
 
     @Column(name = "produto", length = Integer.MAX_VALUE)
     private String produto;
 
     @Column(name = "data_criacao")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @CreationTimestamp
     private LocalDateTime dataCriacao;
 
