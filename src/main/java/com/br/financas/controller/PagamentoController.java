@@ -21,7 +21,7 @@ public class PagamentoController {
 
     private final PagamentoService PagamentoService;
 
-    @GetMapping()
+    @GetMapping("/all")
     public ResponseEntity<List<Pagamento>> buscarPagamentos(){
         return ResponseEntity.ok().body(PagamentoService.buscarPagamentos());
     }

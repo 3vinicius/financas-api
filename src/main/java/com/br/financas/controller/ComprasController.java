@@ -20,7 +20,7 @@ public class ComprasController {
 
     private final CompraService compraService;
 
-    @GetMapping()
+    @GetMapping("all")
     public ResponseEntity<List<Compra>> buscarCompras(){
         return ResponseEntity.ok().body(compraService.buscarCompras());
     }
@@ -51,6 +51,7 @@ public class ComprasController {
     public void deletarCompra(@RequestParam(value = "id") Integer id){
         compraService.deletarCompra(id);
     }
+
 
     @PutMapping()
     public ResponseEntity<Compra> atualizarCompra(@RequestBody CompraDto compra){

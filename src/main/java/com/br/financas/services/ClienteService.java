@@ -4,7 +4,9 @@ import com.br.financas.exceptions.ElementNotSearchException;
 import com.br.financas.model.Cliente;
 import com.br.financas.repositorys.ClienteRepository;
 import com.br.financas.shareds.GenericSpecification;
+import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -49,7 +51,15 @@ public class ClienteService {
     }
 
     public void deletarCliente(Integer id) {
-        clienteRepository.deleteById(id);
+        try {
+            clienteRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,"Cliente vinculado a pagamento ou compra");
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
     }
 
     private Cliente contrutorDeClientes(String nome, String enderco, String phone , String cpf, LocalDate dataNascimento, Optional<Cliente> cliente){

@@ -1,10 +1,10 @@
 package com.br.financas.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -38,10 +38,12 @@ public class Cliente {
     private String cpf;
 
     @Column(name = "data_nascimento")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
 
     @Column(name = "data_criacao")
     @CreationTimestamp
-    private LocalDateTime dataCricacao;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDateTime dataCriacao;
 
 }

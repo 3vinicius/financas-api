@@ -20,7 +20,7 @@ public class ClientesController {
 
     private final ClienteService clienteService;
 
-    @GetMapping()
+    @GetMapping("/all")
     public ResponseEntity<List<Cliente>> buscarClientes() {
         return ResponseEntity.ok().body(clienteService.buscarClientes());
     }

@@ -26,8 +26,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, ex.getStatusCode());
     }
 
-
-
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ElementNotSearchException.class)
     public Map<String, Object> handleElementNotSearchException(ElementNotSearchException ex, HttpServletRequest request) {
@@ -38,6 +36,18 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getMessage());
         response.put("path", request.getRequestURI());
         return response;
+    }
+
+    @ExceptionHandler({ com.fasterxml.jackson.databind.exc.InvalidFormatException.class })
+    public ResponseEntity<Map<String, Object>> handleInvalidDateFormat(Exception ex, HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", System.currentTimeMillis());
+        response.put("status", 400);
+        response.put("error", "Formato de data inválido");
+        response.put("message", "Use o formato dd/MM/yyyy");
+        response.put("path", request.getRequestURI());
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
 }
