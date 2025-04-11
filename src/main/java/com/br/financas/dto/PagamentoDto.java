@@ -11,7 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record PagamentoDto(Integer id, Integer idCliente,
+public record PagamentoDto(Integer id, ClienteDto cliente,
                            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
                            LocalDate dataPagamento, BigDecimal valor, String descricao) {
 }

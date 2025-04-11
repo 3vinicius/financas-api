@@ -2,6 +2,7 @@ package com.br.financas.controller;
 
 
 import com.br.financas.dto.ClienteDto;
+import com.br.financas.dto.ClienteNomeIdDTO;
 import com.br.financas.model.Cliente;
 import com.br.financas.services.ClienteService;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,11 @@ public class ClientesController {
     @GetMapping("/buscar")
     public ResponseEntity<List<Cliente>> buscarClientePorNomeOuCpf(@RequestParam(value = "nome", required = false) String nome, @RequestParam(value = "cpf", required = false) String cpf) {
         return ResponseEntity.ok().body(clienteService.buscarClientePorNomeOuCpf(nome, cpf));
+    }
+
+    @GetMapping("/all/idName")
+    public ResponseEntity<List<ClienteNomeIdDTO>> buscarClienteNomeId() {
+        return ResponseEntity.ok().body(clienteService.buscarClienteNomeIdDTO());
     }
 
     @GetMapping()

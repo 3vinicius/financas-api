@@ -28,7 +28,6 @@ public class Pagamento {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idcliente")
-    @JsonIgnore
     private Cliente idCliente;
 
     @Column(name = "data_pagamento")

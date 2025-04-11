@@ -1,5 +1,6 @@
 package com.br.financas.services;
 
+import com.br.financas.dto.ClienteNomeIdDTO;
 import com.br.financas.exceptions.ElementNotSearchException;
 import com.br.financas.model.Cliente;
 import com.br.financas.repositorys.ClienteRepository;
@@ -61,6 +62,14 @@ public class ClienteService {
         }
 
     }
+
+    public List<ClienteNomeIdDTO> buscarClienteNomeIdDTO(){
+        return clienteRepository.findAll().stream().map(cliente -> new ClienteNomeIdDTO(
+                cliente.getId(),
+                cliente.getNome()
+        )).toList();
+    }
+
 
     private Cliente contrutorDeClientes(String nome, String enderco, String phone , String cpf, LocalDate dataNascimento, Optional<Cliente> cliente){
         Cliente newCliente = new Cliente();

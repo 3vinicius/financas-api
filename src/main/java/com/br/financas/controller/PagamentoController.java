@@ -1,6 +1,7 @@
 package com.br.financas.controller;
 
 
+import com.br.financas.dto.PagamentoClienteDTO;
 import com.br.financas.dto.PagamentoDto;
 import com.br.financas.model.Pagamento;
 import com.br.financas.services.PagamentoService;
@@ -22,7 +23,7 @@ public class PagamentoController {
     private final PagamentoService PagamentoService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Pagamento>> buscarPagamentos(){
+    public ResponseEntity<List<PagamentoClienteDTO>> buscarPagamentos(){
         return ResponseEntity.ok().body(PagamentoService.buscarPagamentos());
     }
 
@@ -45,7 +46,7 @@ public class PagamentoController {
     @PostMapping()
     public ResponseEntity<Pagamento> cadastrarPagamento(@RequestBody PagamentoDto Pagamento){
         return ResponseEntity.ok().body(PagamentoService.cadastrarPagamento(Pagamento.valor(),Pagamento.descricao(),
-                Pagamento.idCliente()));
+                Pagamento.cliente().id()));
     }
 
     @DeleteMapping()
@@ -56,6 +57,6 @@ public class PagamentoController {
     @PutMapping()
     public ResponseEntity<Pagamento> atualizarPagamento(@RequestBody PagamentoDto Pagamento){
         return ResponseEntity.ok().body(PagamentoService.atualizarPagamento(Pagamento.id(),Pagamento.valor(),Pagamento.descricao(),
-                Pagamento.idCliente()));
+                Pagamento.cliente().id()));
     }
 }

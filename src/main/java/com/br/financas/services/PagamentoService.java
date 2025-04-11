@@ -1,6 +1,7 @@
 package com.br.financas.services;
 
 
+import com.br.financas.dto.PagamentoClienteDTO;
 import com.br.financas.exceptions.ElementNotSearchException;
 import com.br.financas.model.Pagamento;
 import com.br.financas.repositorys.PagamentoRepository;
@@ -21,8 +22,21 @@ public class PagamentoService {
     private final PagamentoRepository pagamentoRepository;
     private final ClienteService clienteService;
 
-    public List<Pagamento> buscarPagamentos() {
-        return pagamentoRepository.findAll();
+    public List<PagamentoClienteDTO> buscarPagamentos() {
+         return pagamentoRepository.findAll().stream().map(pagamento -> new PagamentoClienteDTO(
+                pagamento.getIdCliente().getId(),
+                pagamento.getIdCliente().getNome(),
+                pagamento.getIdCliente().getEndereco(),
+                pagamento.getIdCliente().getPhone(),
+                pagamento.getIdCliente().getCpf(),
+                pagamento.getIdCliente().getDataNascimento(),
+                pagamento.getId(),
+                pagamento.getDataPagamento(),
+                pagamento.getValor(),
+                pagamento.getDescricao(),
+                pagamento.isCompensado()
+            )).toList();
+
     }
 
     public Pagamento buscarPagamentoPorId(Integer id) {
