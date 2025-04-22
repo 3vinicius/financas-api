@@ -1,6 +1,7 @@
 package com.br.financas.services;
 
 
+import com.br.financas.dto.CompraClienteDTO;
 import com.br.financas.exceptions.ElementNotSearchException;
 import com.br.financas.model.Compra;
 import com.br.financas.repositorys.CompraRepository;
@@ -21,8 +22,24 @@ public class CompraService {
     private final CompraRepository compraRepository;
     private final ClienteService clienteService;
 
-    public List<Compra> buscarCompras() {
-        return compraRepository.findAll();
+
+    public List<CompraClienteDTO> buscarCompras() {
+        return compraRepository.findAll().stream().map(compra -> new CompraClienteDTO(
+                compra.getIdCliente().getId(),
+                compra.getIdCliente().getNome(),
+                compra.getIdCliente().getEndereco(),
+                compra.getIdCliente().getPhone(),
+                compra.getIdCliente().getCpf(),
+                compra.getIdCliente().getDataNascimento(),
+                compra.getId(),
+                compra.getValor(),
+                compra.getDescricao(),
+                compra.getDataPrevPagamento(),
+                compra.getProduto(),
+                compra.getDataCriacao(),
+                compra.getQuitado(),
+                compra.getTotal()
+        )).toList();
     }
 
     public Compra buscarCompraPorId(Integer id) {
@@ -30,7 +47,7 @@ public class CompraService {
     }
 
     public List<Compra> buscarComprasPorCliente(Integer id) {
-        return compraRepository.findAllByIdcliente(clienteService.buscarClientePorId(id));
+        return compraRepository.findAllByIdCliente(clienteService.buscarClientePorId(id));
     }
 
     public List<Compra> buscarComprasPorData(LocalDate dataInicial, LocalDate dataFinal) {
@@ -74,7 +91,7 @@ public class CompraService {
             newCompra.setDescricao(descricao);
         }
         if (idCliente != null){
-            newCompra.setIdcliente(clienteService.buscarClientePorId(idCliente));
+            newCompra.setIdCliente(clienteService.buscarClientePorId(idCliente));
         }
         if (dataPrevPagamento != null){
             newCompra.setDataPrevPagamento(dataPrevPagamento);

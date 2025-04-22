@@ -1,13 +1,11 @@
 package com.br.financas.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -36,8 +34,7 @@ public class Compra {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idcliente")
-    @JsonIgnore
-    private Cliente idcliente;
+    private Cliente idCliente;
 
     @Column(name = "data_prev_pagamento")
     @JsonFormat(pattern = "dd/MM/yyyy")

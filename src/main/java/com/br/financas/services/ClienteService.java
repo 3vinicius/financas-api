@@ -66,7 +66,8 @@ public class ClienteService {
     public List<ClienteNomeIdDTO> buscarClienteNomeIdDTO(){
         return clienteRepository.findAll().stream().map(cliente -> new ClienteNomeIdDTO(
                 cliente.getId(),
-                cliente.getNome()
+                cliente.getNome(),
+                cliente.getCpf()
         )).toList();
     }
 

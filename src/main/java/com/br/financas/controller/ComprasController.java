@@ -1,7 +1,7 @@
 package com.br.financas.controller;
 
 
-import com.br.financas.dto.CompraDto;
+import com.br.financas.dto.CompraClienteDTO;
 import com.br.financas.model.Compra;
 import com.br.financas.services.CompraService;
 import lombok.AllArgsConstructor;
@@ -20,8 +20,8 @@ public class ComprasController {
 
     private final CompraService compraService;
 
-    @GetMapping("all")
-    public ResponseEntity<List<Compra>> buscarCompras(){
+    @GetMapping("/all")
+    public ResponseEntity<List<CompraClienteDTO>> buscarCompras(){
         return ResponseEntity.ok().body(compraService.buscarCompras());
     }
 
@@ -42,7 +42,7 @@ public class ComprasController {
     }
 
     @PostMapping()
-    public ResponseEntity<Compra> cadastrarCompra(@RequestBody CompraDto compra){
+    public ResponseEntity<Compra> cadastrarCompra(@RequestBody CompraClienteDTO compra){
         return ResponseEntity.ok().body(compraService.cadastrarCompra(compra.valor(),compra.descricao(),
                 compra.idCliente(), compra.dataPrevPagamento(), compra.produto()));
     }
@@ -54,8 +54,8 @@ public class ComprasController {
 
 
     @PutMapping()
-    public ResponseEntity<Compra> atualizarCompra(@RequestBody CompraDto compra){
-        return ResponseEntity.ok().body(compraService.atualizarCompra(compra.id(),compra.valor(),compra.descricao(),
+    public ResponseEntity<Compra> atualizarCompra(@RequestBody CompraClienteDTO compra){
+        return ResponseEntity.ok().body(compraService.atualizarCompra(compra.idCompra(),compra.valor(),compra.descricao(),
                 compra.idCliente(),compra.dataPrevPagamento(),compra.produto()));
     }
 
