@@ -17,4 +17,8 @@ public interface urls {
     interface clientes {
         String Url_Clientes = "clientes";
     }
+
+    interface relatorios {
+        String Url_Relatorios = "relatorios";
+    }
 }

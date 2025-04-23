@@ -1,0 +1,35 @@
+<!-- Created with Jaspersoft Studio version 7.0.2.final using JasperReports Library version 7.0.2-31532122640f516c6d17238ae0e41a08113d5ac0  -->
+<jasperReport name="graficosClientes" language="java" columnCount="1" pageWidth="842" pageHeight="595" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b1f5067b-6f09-4834-97d8-ba9d7dc8bc26">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<query language="sql"><![CDATA[SELECT
+    EXTRACT(YEAR FROM current_date) - EXTRACT(YEAR FROM data_nascimento) AS ano,
+    COUNT(*) AS total_clientes
+FROM clientes
+GROUP BY ano
+ORDER BY ano
+]]></query>
+	<field name="ano" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ano"/>
+		<property name="com.jaspersoft.studio.field.label" value="ano"/>
+	</field>
+	<field name="total_clientes" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="total_clientes"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_clientes"/>
+	</field>
+	<background splitType="Stretch"/>
+	<summary height="248" splitType="Stretch">
+		<element kind="chart" chartType="bar" uuid="3bf55744-f2cf-4a73-a8f6-fd9bbfe44087" x="121" y="20" width="560" height="200" evaluationTime="Report">
+			<dataset kind="category">
+				<series>
+					<seriesExpression><![CDATA[$F{total_clientes}]]></seriesExpression>
+					<categoryExpression><![CDATA[$F{ano}]]></categoryExpression>
+					<valueExpression><![CDATA[$F{total_clientes}.intValue()]]></valueExpression>
+				</series>
+			</dataset>
+			<plot categoryAxisLabelColor="#000000" categoryAxisTickLabelColor="#000000" categoryAxisLineColor="#000000" valueAxisLabelColor="#000000" valueAxisTickLabelColor="#000000" valueAxisLineColor="#000000">
+				<itemLabel/>
+			</plot>
+		</element>
+	</summary>
+</jasperReport>
