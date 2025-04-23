@@ -33,11 +33,6 @@ public class JasperReportService {
     private DataSource dataSource;
 
 
-
-    private DataSource generateConnection() {
-        return new DriverManagerDataSource(url, username, password);
-    }
-
     public void relatorioClientes() throws IOException, JRException {
         dataSource = new DriverManagerDataSource(url, username, password);
         try (InputStream inputStream = resource.getInputStream()) {
@@ -56,16 +51,5 @@ public class JasperReportService {
             diretorio.mkdir();
         }
     }
-
-//    private void graficosCliente() throws IOException, JRException {
-//
-//        Resource resource =  new ClassPathResource( "reports/graficosClientes.jrxml");
-//        try (InputStream inputStream = resource.getInputStream()) {
-//            JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
-//            JasperPrint print = JasperFillManager.fillReport(jasperReport, new HashMap<>(), this.dataSource.getConnection());
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
 }
