@@ -1,10 +1,9 @@
 package com.br.financas.controller;
 
 import com.br.financas.services.JasperReportService;
-import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperPrint;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,8 +21,8 @@ public class RelatoriosController {
 
 
     @GetMapping()
-    public void gerarRelatorio() throws JRException, IOException {
-        jasperReportService.relatorioClientes();
+    public ResponseEntity<byte[]> gerarRelatorio() throws JRException, IOException {
+        return jasperReportService.relatorioClientes();
     }
 
 }

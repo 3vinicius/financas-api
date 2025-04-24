@@ -1,10 +1,9 @@
 package com.br.financas.services;
 
-import lombok.AllArgsConstructor;
-
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.Resource;
@@ -30,16 +29,14 @@ public class JasperReportService {
     @Value("${spring.datasource.password}")
     private String password;
 
-    private DataSource dataSource;
-
-
-    public void relatorioClientes() throws IOException, JRException {
-        dataSource = new DriverManagerDataSource(url, username, password);
+    public ResponseEntity<byte[]> relatorioClientes() throws IOException, JRException {
+        DataSource dataSource = new DriverManagerDataSource(url, username, password);
         try (InputStream inputStream = resource.getInputStream()) {
             JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
-            JasperPrint print = JasperFillManager.fillReport(jasperReport, new HashMap<>(), this.dataSource.getConnection());
+            JasperPrint print = JasperFillManager.fillReport(jasperReport, new HashMap<>(), dataSource.getConnection());
             this.criarDiretorio();
             JasperExportManager.exportReportToPdfFile(print, "pdf/clientesRelatorio.pdf");
+            return this.contruirResponseFile("clientesRelatorio.pdf");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -50,6 +47,29 @@ public class JasperReportService {
         if (!diretorio.exists()) {
             diretorio.mkdir();
         }
+    }
+
+    public ResponseEntity<byte[]> contruirResponseFile(String nome) throws IOException, JRException {
+
+          File pdfFile = new File("pdf/"+nome);
+
+          if (pdfFile.exists()) {
+
+              byte[] pdfContent = java.nio.file.Files.readAllBytes(pdfFile.toPath());
+
+              HttpHeaders headers = new HttpHeaders();
+              headers.setContentType(MediaType.APPLICATION_PDF);
+              headers.setContentDisposition(ContentDisposition.builder("attachment")
+                      .filename("clientesRelatorio.pdf")
+                      .build());
+
+              return ResponseEntity.ok()
+                      .headers(headers)
+                      .body(pdfContent);
+          } else {
+              return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                      .body(null);
+          }
     }
 
 }
