@@ -3,9 +3,11 @@ package com.br.financas.services;
 
 import com.br.financas.dto.PagamentoClienteDTO;
 import com.br.financas.exceptions.ElementNotSearchException;
+import com.br.financas.model.Cliente;
 import com.br.financas.model.Pagamento;
 import com.br.financas.repositorys.PagamentoRepository;
 import com.br.financas.shareds.GenericSpecification;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class PagamentoService {
 
     private final PagamentoRepository pagamentoRepository;
@@ -83,9 +85,6 @@ public class PagamentoService {
         }
         if (descricao != null && !descricao.isEmpty()){
             newPagamento.setDescricao(descricao);
-        }
-        if (idCliente != null){
-            newPagamento.setIdCliente(clienteService.buscarClientePorId(idCliente));
         }
 
         return newPagamento;

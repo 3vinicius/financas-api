@@ -3,10 +3,12 @@ package com.br.financas.services;
 
 import com.br.financas.dto.CompraClienteDTO;
 import com.br.financas.exceptions.ElementNotSearchException;
+import com.br.financas.model.Cliente;
 import com.br.financas.model.Compra;
 import com.br.financas.repositorys.CompraRepository;
 import com.br.financas.shareds.GenericSpecification;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -71,7 +73,7 @@ public class CompraService {
 
     public Compra atualizarCompra(Integer id,BigDecimal valor, String descricao, Integer idCliente ,
                                   LocalDate dataPrevPagamento, String produto) {
-        Compra compra = buscarCompraPorId(id);
+         Compra compra = buscarCompraPorId(id);
         Compra newCompra = contrutorDeCompras(valor,descricao,idCliente, dataPrevPagamento, produto, Optional.of(compra));
 
         return compraRepository.save(newCompra);
@@ -90,14 +92,14 @@ public class CompraService {
         if (descricao != null && !descricao.isEmpty()){
             newCompra.setDescricao(descricao);
         }
-        if (idCliente != null){
-            newCompra.setIdCliente(clienteService.buscarClientePorId(idCliente));
-        }
         if (dataPrevPagamento != null){
             newCompra.setDataPrevPagamento(dataPrevPagamento);
         }
         if (produto != null && !produto.isEmpty()){
             newCompra.setProduto(produto);
+        }
+        if (newCompra.getQuitado() == null) {
+            newCompra.setQuitado(false);
         }
 
         return newCompra;

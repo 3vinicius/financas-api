@@ -55,8 +55,8 @@ public class PagamentoController {
     }
 
     @PutMapping()
-    public ResponseEntity<Pagamento> atualizarPagamento(@RequestBody PagamentoDto Pagamento){
+    public ResponseEntity<Pagamento> atualizarPagamento(@RequestBody PagamentoClienteDTO Pagamento){
         return ResponseEntity.ok().body(PagamentoService.atualizarPagamento(Pagamento.id(),Pagamento.valor(),Pagamento.descricao(),
-                Pagamento.cliente().id()));
+                Pagamento.idCliente()));
     }
 }

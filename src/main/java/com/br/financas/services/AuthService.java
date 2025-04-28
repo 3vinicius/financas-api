@@ -13,8 +13,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthService implements UserDetailsService {
 
-    private final UsuarioRepository usuarioRepository;
 
+    private final UsuarioRepository usuarioRepository;
 
 
     public Usuario getUsuario(){

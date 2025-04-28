@@ -27,7 +27,7 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
-    public Cliente buscarClientePorId(Integer id){
+    public Cliente  buscarClientePorId(Integer id){
         return clienteRepository.findById(id).orElseThrow(() -> new ElementNotSearchException( "Cliente não encontrado!"));
     }
 

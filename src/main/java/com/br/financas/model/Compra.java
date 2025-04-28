@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,8 +18,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "compras")
-public class Compra {
+public class Compra implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
 
@@ -32,7 +35,7 @@ public class Compra {
     @Column(name = "descricao", length = Integer.MAX_VALUE)
     private String descricao;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idcliente")
     private Cliente idCliente;
 
