@@ -104,3 +104,115 @@ update pagamentos
 set compensado = true
 where idCliente in (3, 4, 5);
 
+
+-- --------------------------- **DEFAULT DATA TESTES** ----------------------------------------------------
+
+INSERT INTO clientes (nome, endereco, phone, cpf, data_nascimento, data_criacao)
+SELECT
+    'Cliente ' || i,
+    'Endereço ' || i,
+    '99999-000' || i,
+    '000.000.000-' || lpad(i::text, 2, '0'),
+    date '1980-01-01' + (random() * 15000)::int, -- nascimento aleatório até hoje
+    now() - (random() * interval '365 days') -- data de criação até 1 ano atrás
+FROM generate_series(1, 1000) AS s(i);
+
+
+
+INSERT INTO pagamentos (valor, descricao, idCliente, compensado, data_pagamento)
+SELECT
+    round((random() * 900 + 100)::numeric, 2), -- valor entre 100 e 1000
+    'Pagamento gerado',
+    (SELECT id FROM clientes ORDER BY random() LIMIT 1),
+    random() > 0.5,
+    now() - (random() * interval '180 days') -- pagamento nos últimos 6 meses
+FROM generate_series(1, 5000);
+
+
+
+
+INSERT INTO compras (valor, descricao, idCliente, data_prev_pagamento, produto, data_criacao, quitado, total)
+SELECT
+    round((random() * 450 + 50)::numeric, 2),
+    'Compra simulada',
+    (SELECT id FROM clientes ORDER BY random() LIMIT 1),
+    now() + (random() * interval '60 days'), -- previsão futura até 2 meses
+    'Produto ' || i,
+    now() - (random() * interval '180 days'), -- data de criação aleatória
+    random() > 0.3, -- 70% quitado
+    round((random() * 450 + 50)::numeric, 2)
+FROM generate_series(1, 3000) AS s(i);
+
+
+-- --------------------------- **CONSULTAS PARA GRAFICOS** ----------------------------------------------------
+
+-- Total de clientes por mês
+SELECT
+    EXTRACT(YEAR FROM data_criacao) AS ano,
+    EXTRACT(MONTH FROM data_criacao) AS mes,
+
+    COUNT(*) AS total_clientes
+FROM clientes
+GROUP BY ano,mes
+ORDER BY ano,mes;
+
+-- Total Pagamentos por mês
+SELECT
+    EXTRACT(YEAR FROM data_pagamento) AS ano,
+    EXTRACT(MONTH FROM data_pagamento) AS mes,
+    SUM(valor) AS total_pagamentos
+FROM pagamentos where compensado = true
+GROUP BY ano,mes
+ORDER BY ano,mes;
+
+SELECT
+    EXTRACT(YEAR FROM data_pagamento) AS ano,
+    EXTRACT(MONTH FROM data_pagamento) AS mes,
+    SUM(valor) AS total_pagamentos
+FROM pagamentos where compensado = false
+GROUP BY ano,mes
+ORDER BY ano,mes;
+
+
+-- Total Compras por mês
+SELECT
+    EXTRACT(YEAR FROM data_criacao) AS ano,
+    EXTRACT(MONTH FROM data_criacao) AS mes,
+    SUM(valor) AS total_compras
+FROM compras where quitado = false
+GROUP BY ano,mes
+ORDER BY ano,mes;
+
+SELECT
+    EXTRACT(YEAR FROM data_criacao) AS ano,
+    EXTRACT(MONTH FROM data_criacao) AS mes,
+    SUM(valor) AS total_compras
+FROM compras where quitado = true
+GROUP BY ano,mes
+ORDER BY ano,mes;
+
+
+-- Pagamento e Compras
+SELECT
+    EXTRACT(YEAR FROM data_criacao) AS ano,
+    EXTRACT(MONTH FROM data_criacao) AS mes,
+    SUM(valor) AS total_compras
+FROM compras As c
+GROUP BY ano,mes
+ORDER BY ano,mes;
+
+SELECT
+    EXTRACT(YEAR FROM data_pagamento) AS ano,
+    EXTRACT(MONTH FROM data_pagamento) AS mes,
+    SUM(valor) AS total_pagamentos
+FROM pagamentos
+GROUP BY ano,mes
+ORDER BY ano,mes;
+
+SELECT
+                    EXTRACT(YEAR FROM data_compra) AS ano,
+                    EXTRACT(MONTH FROM data_compra) AS mes,
+                    COUNT(*) AS total_compras
+                FROM compras
+                GROUP BY ano,mes
+                ORDER BY ano,mes ;

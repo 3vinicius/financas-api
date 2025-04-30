@@ -21,4 +21,6 @@ public interface urls {
     interface relatorios {
         String Url_Relatorios = "relatorios";
     }
+
+    String Graphs = "graphs";
 }
