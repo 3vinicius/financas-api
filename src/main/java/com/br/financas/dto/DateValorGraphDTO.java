@@ -1,5 +1,7 @@
 package com.br.financas.dto;
 
-public record DateValorGraphDTO(String data, Float valor) {
+import java.util.List;
+
+public record DateValorGraphDTO(List<String> dates, List<Float> valor) {
 
 }

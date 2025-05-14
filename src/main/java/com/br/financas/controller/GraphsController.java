@@ -22,7 +22,7 @@ public class GraphsController {
     private final GraphsService graphsService;
 
     @GetMapping()
-    public ResponseEntity<HashMap<String, List<DateValorGraphDTO>>> buscarPagamentos(){
+    public ResponseEntity<HashMap<String, DateValorGraphDTO>> buscarPagamentos(){
         return ResponseEntity.ok().body(graphsService.buscarDados());
     }
 

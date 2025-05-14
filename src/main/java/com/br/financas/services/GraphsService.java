@@ -20,18 +20,18 @@ public class GraphsService {
     private final PagamentoRepository pagamentoRepository;
     private final CompraRepository compraRepository;
 
-    public HashMap<String, List<DateValorGraphDTO>> buscarDados() {
-        List<DateValorGraphDTO>  totalClientesPorPeriodo =  construirDateValorLongGraphDTO(clienteRepository.buscarTotalClientesPorPeriodo());
+    public HashMap<String, DateValorGraphDTO> buscarDados() {
+        DateValorGraphDTO  totalClientesPorPeriodo =  construirDateValorGraphDTO(clienteRepository.buscarTotalClientesPorPeriodo());
 
-         List<DateValorGraphDTO> totalPagamentosPorPeriodo = construirDateValorLongGraphDTO(pagamentoRepository.buscarTotalPagamentosPorPeriodo());
-         List<DateValorGraphDTO> totalPagamentosNotCompensadoPorPeriodo = construirDateValorGraphDTO(pagamentoRepository.buscarPagamentosNotCompensadoPorPeriodo());
-         List<DateValorGraphDTO> totalPagamentosCompensadoPorPeriodo = construirDateValorGraphDTO(pagamentoRepository.buscarPagamentosCompensadoPorPeriodo());
+         DateValorGraphDTO totalPagamentosPorPeriodo = construirDateValorGraphDTO(pagamentoRepository.buscarTotalPagamentosPorPeriodo());
+         DateValorGraphDTO totalPagamentosNotCompensadoPorPeriodo = construirDateValorGraphDTO(pagamentoRepository.buscarPagamentosNotCompensadoPorPeriodo());
+         DateValorGraphDTO totalPagamentosCompensadoPorPeriodo = construirDateValorGraphDTO(pagamentoRepository.buscarPagamentosCompensadoPorPeriodo());
 
-         List<DateValorGraphDTO>  totalComprasPorPeriodo = construirDateValorLongGraphDTO(compraRepository.buscarTotalComprasPorPeriodo());
-         List<DateValorGraphDTO> totalComprasQuitadasPorPeriodo = construirDateValorGraphDTO(compraRepository.buscarComprasQuitadasPorPeriodo());
-         List<DateValorGraphDTO> totalComprasNotQuitadasPorPeriodo = construirDateValorGraphDTO(compraRepository.buscarComprasNotQuitadasPorPeriodo());
+         DateValorGraphDTO  totalComprasPorPeriodo = construirDateValorGraphDTO(compraRepository.buscarTotalComprasPorPeriodo());
+         DateValorGraphDTO totalComprasQuitadasPorPeriodo = construirDateValorGraphDTO(compraRepository.buscarComprasQuitadasPorPeriodo());
+         DateValorGraphDTO totalComprasNotQuitadasPorPeriodo = construirDateValorGraphDTO(compraRepository.buscarComprasNotQuitadasPorPeriodo());
 
-        HashMap<String, List<DateValorGraphDTO>> dados = new HashMap<>();
+        HashMap<String, DateValorGraphDTO> dados = new HashMap<>();
         dados.put("Total clientes", totalClientesPorPeriodo);
         dados.put("Total pagamentos", totalPagamentosPorPeriodo);
         dados.put("Total pagamentos não compensados", totalPagamentosNotCompensadoPorPeriodo);
@@ -41,34 +41,25 @@ public class GraphsService {
         dados.put("Total compras não quitadas", totalComprasNotQuitadasPorPeriodo);
         return dados;
     }
+    
 
-
-    private List<DateValorGraphDTO> construirDateValorLongGraphDTO(List<Object[]> dados) {
-        List<DateValorGraphDTO> dateValorGraphDTOS = new ArrayList<>();
-
+    private DateValorGraphDTO construirDateValorGraphDTO(List<Object[]> dados) {
+        List<String> dates = new ArrayList<>();
+        List<Float> values = new ArrayList<>();
         for (Object[] dado : dados) {
             BigDecimal mes = (BigDecimal) dado[0];
             BigDecimal ano = (BigDecimal) dado[1];
-            Long valor = (Long) dado[2];
+            var valor = 0f;
+            if (dado[2] instanceof Long result) {
+                valor = result.floatValue();
+            } else if (dado[2] instanceof BigDecimal result) {
+                valor = result.floatValue();
+            }
+            dates.add(mes.toString()+"-"+ano.toString());
+            values.add(valor);
 
-            DateValorGraphDTO dateValorGraphDTO = new DateValorGraphDTO(mes.toString()+"-"+ano.toString() , valor.floatValue());
-            dateValorGraphDTOS.add(dateValorGraphDTO);
         }
-        return dateValorGraphDTOS;
-    }
-
-    private List<DateValorGraphDTO> construirDateValorGraphDTO(List<Object[]> dados) {
-        List<DateValorGraphDTO> dateValorGraphDTOS = new ArrayList<>();
-
-        for (Object[] dado : dados) {
-            BigDecimal mes = (BigDecimal) dado[0];
-            BigDecimal ano = (BigDecimal) dado[1];
-            BigDecimal valor = (BigDecimal) dado[2];
-
-            DateValorGraphDTO dateValorGraphDTO = new DateValorGraphDTO(mes.toString()+"-"+ano.toString() , valor.floatValue());
-            dateValorGraphDTOS.add(dateValorGraphDTO);
-        }
-        return dateValorGraphDTOS;
+        return new DateValorGraphDTO(dates,values);
     }
 
 }
