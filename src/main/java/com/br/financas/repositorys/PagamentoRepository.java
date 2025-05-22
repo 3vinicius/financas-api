@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.br.financas.shareds.QuerysGraphs.dashboardQuerys.pagamentosSemana;
 import static com.br.financas.shareds.QuerysGraphs.pagamentosQuerys.*;
 
 @Repository
@@ -29,4 +30,7 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Integer>, 
 
     @Query(nativeQuery = true, value = totalPagamentosCompensado)
     List<Object[]> buscarPagamentosCompensadoPorPeriodo();
+
+    @Query(nativeQuery = true, value = pagamentosSemana)
+    Object buscarPagamentosSemana();
 }

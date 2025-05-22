@@ -23,4 +23,6 @@ public interface urls {
     }
 
     String Graphs = "graphs";
+
+    String Dashboard = "dashboard";
 }

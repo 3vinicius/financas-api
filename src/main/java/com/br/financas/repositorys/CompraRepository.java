@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import static com.br.financas.shareds.QuerysGraphs.compraQuerys.*;
+import static com.br.financas.shareds.QuerysGraphs.dashboardQuerys.*;
 
 @Repository
 public interface CompraRepository extends JpaRepository<Compra, Integer>, JpaSpecificationExecutor<Compra> {
@@ -27,5 +28,13 @@ public interface CompraRepository extends JpaRepository<Compra, Integer>, JpaSpe
     @Query(nativeQuery = true, value = totalComprasNotQuitada)
     List<Object[]> buscarComprasNotQuitadasPorPeriodo();
 
+    @Query(nativeQuery = true, value = comprasSemana)
+    List<Compra> buscarComprasDaSemana();
+
+    @Query(nativeQuery = true, value = dadosComprasSemana)
+    Object buscarDadosDasComprasDaSemana();
+
+    @Query(nativeQuery = true, value = graficoComprasSemana)
+    List<Object[]> buscarGraficoDasComprasDaSemana();
 
 }

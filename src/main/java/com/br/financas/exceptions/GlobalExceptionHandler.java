@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", System.currentTimeMillis());
         response.put("status", 400);
-        response.put("error", "Formato de data inválido");
+        response.put("error", "Formato de dates inválido");
         response.put("message", "Use o formato dd/MM/yyyy");
         response.put("path", request.getRequestURI());
 

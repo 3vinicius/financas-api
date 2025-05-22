@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.br.financas.shareds.QuerysGraphs.clienteQuerys.totalClientes;
-
+import static com.br.financas.shareds.QuerysGraphs.dashboardQuerys.clientesSemana;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> , JpaSpecificationExecutor<Cliente> {
 
@@ -21,4 +21,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> , Jpa
 
     @Query(value = totalClientes, nativeQuery = true)
     List<Object[]> buscarTotalClientesPorPeriodo();
+
+    @Query(value = clientesSemana, nativeQuery = true)
+    Integer buscarClienteDaSemana();
 }

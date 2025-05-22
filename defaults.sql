@@ -114,7 +114,7 @@ SELECT
     '99999-000' || i,
     '000.000.000-' || lpad(i::text, 2, '0'),
     date '1980-01-01' + (random() * 15000)::int, -- nascimento aleatório até hoje
-    now() - (random() * interval '365 days') -- data de criação até 1 ano atrás
+    now() + interval '365 days' - (random() * interval '730 days') -- dates de criação até 1 ano atrás
 FROM generate_series(1, 1000) AS s(i);
 
 
@@ -125,9 +125,8 @@ SELECT
     'Pagamento gerado',
     (SELECT id FROM clientes ORDER BY random() LIMIT 1),
     random() > 0.5,
-    now() - (random() * interval '180 days') -- pagamento nos últimos 6 meses
+    now() + interval '365 days' - (random() * interval '730 days')-- pagamento nos últimos 6 meses
 FROM generate_series(1, 5000);
-
 
 
 
@@ -138,12 +137,12 @@ SELECT
     (SELECT id FROM clientes ORDER BY random() LIMIT 1),
     now() + (random() * interval '60 days'), -- previsão futura até 2 meses
     'Produto ' || i,
-    now() - (random() * interval '180 days'), -- data de criação aleatória
+    now() + interval '365 days' - (random() * interval '730 days') ,-- dates de criação aleatória
     random() > 0.3, -- 70% quitado
     round((random() * 450 + 50)::numeric, 2)
 FROM generate_series(1, 3000) AS s(i);
 
-
+drop table compras;
 -- --------------------------- **CONSULTAS PARA GRAFICOS** ----------------------------------------------------
 
 -- Total de clientes por mês
@@ -216,3 +215,44 @@ SELECT
                 FROM compras
                 GROUP BY ano,mes
                 ORDER BY ano,mes ;
+
+-- Querys para dashboard
+
+-- Querys para compras
+SELECT
+    COUNT(*) AS total_compras,
+    SUM(total) AS soma_total
+FROM compras
+WHERE data_criacao BETWEEN date_trunc('week', NOW()) AND date_trunc('week', NOW()) + interval '7 days';
+
+
+-- Querys para pagamentos
+
+SELECT
+    SUM(valor) as semana_atual,
+    (SELECT SUM(valor)
+                   FROM pagamentos
+                   WHERE data_pagamento between date_trunc('week', NOW()) - interval '7 days' and date_trunc('week', NOW()))  as semana_anterior
+FROM pagamentos
+WHERE data_pagamento between date_trunc('week', NOW()) and date_trunc('week', NOW()) + interval '7 days';
+
+
+SELECT
+    count(*) as total_clientes
+FROM clientes
+WHERE data_criacao between date_trunc('week', NOW()) - interval '7 days' and date_trunc('week', NOW());
+
+SELECT
+    *
+from compras where data_criacao between date_trunc('week', NOW())- interval '7 days' and date_trunc('week', NOW());
+
+
+SELECT
+    sum(valor) as valor,
+    EXTRACT(MONTH FROM data_criacao) AS mes,
+    EXTRACT(DAY FROM data_criacao) AS dia
+from compras where data_criacao between date_trunc('week', NOW())- interval '25 days' and date_trunc('week', NOW())
+GROUP BY dia,mes
+ORDER BY mes,dia;
+
+
