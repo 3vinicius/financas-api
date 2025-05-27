@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.Map;
+
 import static com.br.financas.shareds.urls.auth.*;
 
 @RestController
@@ -32,26 +34,21 @@ public class Auth {
     }
 
     @PostMapping(value = Url_login)
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         String password = loginRequest.login();
         String login = loginRequest.password();
+        String token = null;
+        try {
+            var loginPassword = new UsernamePasswordAuthenticationToken(login, password);
+            var auth = authenticationManager.authenticate(loginPassword);
+            token = tokenService.generateToken((UserDetails) auth.getPrincipal());
+        }
+        catch (Exception e) {
+            System.out.println("Erro ao fazer login: " + e.getMessage());
+            return ResponseEntity.status(401).body(Map.of("error", e.getMessage()));
+        }
 
-        var loginPassword = new UsernamePasswordAuthenticationToken(login, password);
-        var auth = authenticationManager.authenticate(loginPassword);
-        var token = tokenService.generateToken((UserDetails) auth.getPrincipal());
-
-        Usuario usuario = authService.getUsuario();
-
-        Cookie cookie = new Cookie("token_session", token);
-        cookie.setMaxAge(3600);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-
-        response.addCookie(cookie);
-        response.addHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; object-src 'none'; style-src 'self';");
-        response.addHeader("Cache-Control", "no-cache, must-revalidate, proxy-revalidate");
-
-        return ResponseEntity.ok().body(token);
+        return ResponseEntity.ok().body(Map.of("token", token));
     }
 
 }

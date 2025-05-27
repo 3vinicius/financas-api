@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -27,25 +28,32 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
-        String token = null;
-
-        String uri = request.getRequestURI();
-        // Verifique se a URI é "/auth/login/**" e não processe o filtro
-        if (uri.startsWith("/auth/login")) {
-            filterChain.doFilter(request, response); // Ignora a autenticação para login
+        if (request.getRequestURI().startsWith("/auth/login")) {
+            filterChain.doFilter(request, response);
+            return ;
+        }
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            this.responseInvalidToken(response);
             return;
         }
-
-
-        if (authorization != null && authorization.startsWith("Bearer ")) {
-            token = authorization.replace("Bearer ", "");
-            var login = tokenService.validateToken(token);
-            if (login != null) {
-                UserDetails userDetails = authService.loadUserByUsername(login);
-                var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+        String token = authorization.replace("Bearer ", "");
+        var login = tokenService.validateToken(token);
+        if (login.isEmpty()) {
+            this.responseInvalidToken(response);
+            return;
         }
+        UserDetails userDetails = authService.loadUserByUsername(login);
+        var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         filterChain.doFilter(request, response);
     }
+
+    private void responseInvalidToken(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write("{\"message\": \"Token invalido ou expirado\"}");
+        response.getWriter().flush();
+    }
+
 }
