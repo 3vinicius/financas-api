@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -28,7 +27,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
-        if (request.getRequestURI().startsWith("/auth/login")) {
+        if (request.getRequestURI().startsWith("/auth/login") || authorization == null) {
             filterChain.doFilter(request, response);
             return ;
         }

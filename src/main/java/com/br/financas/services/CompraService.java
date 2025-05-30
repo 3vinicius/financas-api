@@ -61,6 +61,13 @@ public class CompraService {
     public Compra cadastrarCompra(BigDecimal valor, String descricao, Integer idCliente ,
                                   LocalDate dataPrevPagamento, String produto) {
 
+        if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Valor do pagamento deve ser maior que zero.");
+        }
+        if (idCliente == null) {
+            throw new IllegalArgumentException("ID do cliente não pode ser nulo.");
+        }
+
         Compra compra = contrutorDeCompras(valor,descricao,idCliente, dataPrevPagamento, produto, Optional.empty());
         compra.setTotal(compra.getValor().negate());
 
@@ -100,6 +107,10 @@ public class CompraService {
         }
         if (newCompra.getQuitado() == null) {
             newCompra.setQuitado(false);
+        }
+        if (idCliente != null){
+            Cliente cliente = clienteService.buscarClientePorId(idCliente);
+            newCompra.setIdCliente(cliente);
         }
 
         return newCompra;

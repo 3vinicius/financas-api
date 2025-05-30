@@ -57,6 +57,12 @@ public class PagamentoService {
 
     public Pagamento cadastrarPagamento(BigDecimal valor, String descricao, Integer idCliente ) {
 
+        if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Valor do pagamento deve ser maior que zero.");
+        }
+        if (idCliente == null) {
+            throw new IllegalArgumentException("ID do cliente não pode ser nulo.");
+        }
         Pagamento Pagamento = contrutorDePagamentos(valor,descricao,idCliente, Optional.empty());
 
         return pagamentoRepository.save(Pagamento);
@@ -85,6 +91,10 @@ public class PagamentoService {
         }
         if (descricao != null && !descricao.isEmpty()){
             newPagamento.setDescricao(descricao);
+        }
+        if (idCliente != null){
+            Cliente cliente = clienteService.buscarClientePorId(idCliente);
+            newPagamento.setIdCliente(cliente);
         }
 
         return newPagamento;
